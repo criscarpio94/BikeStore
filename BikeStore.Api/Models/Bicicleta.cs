@@ -1,0 +1,21 @@
+﻿using System.Text.Json.Serialization;
+
+namespace BikeStore.Api.Models
+{
+    public class Bicicleta
+    {
+        public int IdBicicleta { get; set; }
+        public int IdCategoria { get; set; }
+        public string Marca { get; set; } = string.Empty;
+        public string Modelo { get; set; } = string.Empty;
+        public decimal Precio { get; set; }
+        public int Stock { get; set; }
+        public string Estado { get; set; } = "Disponible";
+
+        public Categoria? Categoria { get; set; }
+
+        [JsonIgnore]
+        public ICollection<DetalleVenta> ? DetallesVenta { get; set; }
+    }
+}
+
