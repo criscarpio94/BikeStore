@@ -1,0 +1,57 @@
+## Visual Studio / .NET
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## ASP.NET / Razor
+*.dbmdl
+*.jfm
+ScaffoldingReadMe.txt
+
+## Archivos temporales
+*.tmp
+*.temp
+*.cache
+*.log
+*.vspscc
+*.vssscc
+*.pidb
+*.svclog
+*.scc
+
+## Sistema operativo
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+## Rider / VS Code (por si alguien los usa)
+.idea/
+.vscode/
+*.code-workspace
