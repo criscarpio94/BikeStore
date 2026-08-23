@@ -1,0 +1,24 @@
+@model BikeStore.Web.Models.CategoriaViewModel
+
+<div class="container mt-4">
+    <h2>Editar Categoría</h2>
+    <form asp-action="Edit" method="post" class="card p-4 shadow-sm mt-3">
+        <input type="hidden" asp-for="IdCategoria" />
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label class="form-label">Nombre de Categoría</label>
+            <input asp-for="Nombre" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="mb-3 form-check">
+            <input asp-for="Activo" class="form-check-input" />
+            <label class="form-check-label" asp-for="Activo">Activa</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
