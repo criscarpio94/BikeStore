@@ -1,0 +1,38 @@
+﻿@model BikeStore.Web.Models.BicicletaViewModel
+
+<div class="container mt-4">
+    <h2>Editar Bicicleta</h2>
+    <form asp-action="Edit" method="post" class="card p-4 shadow-sm mt-3">
+        <input type="hidden" asp-for="IdBicicleta" />
+        <input type="hidden" asp-for="IdCategoria" />
+
+        <div class="mb-3">
+            <label class="form-label">Marca</label>
+            <input asp-for="Marca" class="form-control" readonly />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Modelo</label>
+            <input asp-for="Modelo" class="form-control" readonly />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Precio ($)</label>
+            <input asp-for="Precio" type="number" step="0.01" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Stock</label>
+            <input asp-for="Stock" type="number" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Estado</label>
+            <select asp-for="Estado" class="form-select">
+                <option value="Disponible">Disponible</option>
+                <option value="Agotado">Agotado</option>
+                <option value="Mantenimiento">Mantenimiento</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Actualizar Cambios</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
