@@ -1,0 +1,73 @@
+﻿@model BikeStore.Web.Models.VentaViewModel
+
+@{
+    ViewData["Title"] = "Detalle de Venta";
+    // Cálculo seguro por si la factura en BD es antigua y guardó Subtotal en 0
+    var subtotalReal = Model.Subtotal > 0 ? Model.Subtotal : (Model.Total / 1.15m);
+    var ivaReal = Model.Iva > 0 ? Model.Iva : (Model.Total - subtotalReal);
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>🧾 Factura #@Model.IdVenta</h2>
+            <span class="badge bg-success fs-6">Procesada</span>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <p class="mb-1"><strong>Cliente:</strong> @Model.NombreCliente</p>
+                <p class="mb-1"><strong>ID Cliente:</strong> @Model.IdCliente</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p class="mb-1"><strong>Fecha:</strong> @Model.Fecha.ToString("dd/MM/yyyy HH:mm")</p>
+            </div>
+        </div>
+
+        <h5>Productos Adquiridos</h5>
+        <div class="table-responsive mt-2">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Producto</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-end">Precio Unit.</th>
+                        <th class="text-end">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Detalles != null && Model.Detalles.Any())
+                    {
+                        @foreach (var item in Model.Detalles)
+                        {
+                            <tr>
+                                <td>@item.NombreBicicleta</td>
+                                <td class="text-center">@item.Cantidad</td>
+                                <td class="text-end">$@item.Precio.ToString("F2")</td>
+                                <td class="text-end">$@item.Subtotal.ToString("F2")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">No se registraron productos en esta venta.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row justify-content-end text-end mt-3">
+            <div class="col-md-4">
+                <p class="mb-1">Subtotal: <strong>$@subtotalReal.ToString("F2")</strong></p>
+                <p class="mb-1">IVA (15%): <strong>$@ivaReal.ToString("F2")</strong></p>
+                <h4 class="text-primary mt-2">Total: $@Model.Total.ToString("F2")</h4>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a asp-action="Index" class="btn btn-secondary">← Volver al Historial</a>
+        </div>
+    </div>
+</div>

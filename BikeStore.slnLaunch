@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "BikeStore (Api + Web)",
+    "Projects": [
+      {
+        "Path": "BikeStore.Api\\BikeStore.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "BikeStore.Web\\BikeStore.Web.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

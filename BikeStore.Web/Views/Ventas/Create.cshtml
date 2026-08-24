@@ -1,0 +1,136 @@
+﻿@model BikeStore.Web.Models.VentaCreateViewModel
+
+<div class="container mt-4">
+    <h2>🧾 Registrar Venta Multi-Producto</h2>
+
+    <div asp-validation-summary="All" class="text-danger fw-bold mb-3"></div>
+
+    <div class="card p-4 shadow-sm mb-4">
+        <h5>1. Datos del Cliente</h5>
+        <form asp-action="BuscarCliente" method="post" class="row g-2 align-items-center mb-3">
+            @for (int i = 0; i < Model.Detalles.Count; i++)
+            {
+                <input type="hidden" name="Detalles[@i].IdBicicleta" value="@Model.Detalles[i].IdBicicleta" />
+                <input type="hidden" name="Detalles[@i].NombreBicicleta" value="@Model.Detalles[i].NombreBicicleta" />
+                <input type="hidden" name="Detalles[@i].Precio" value="@Model.Detalles[i].Precio" />
+                <input type="hidden" name="Detalles[@i].Cantidad" value="@Model.Detalles[i].Cantidad" />
+            }
+            <div class="col-md-6">
+                <input asp-for="CedulaBusqueda" class="form-control" placeholder="Ingrese Cédula del Cliente..." />
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-outline-primary w-100">🔍 Buscar Cédula</button>
+            </div>
+        </form>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">O Seleccionar de la Lista</label>
+                <select asp-for="IdCliente" asp-items="Model.ClientesList" class="form-select">
+                    <option value="0">-- Seleccione Cliente --</option>
+                </select>
+            </div>
+            <div class="col-md-8">
+                <label class="form-label">Cliente Seleccionado</label>
+                <input asp-for="NombreCliente" class="form-control bg-light" readonly placeholder="Razón Social / Nombre" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Agregar Productos -->
+    <div class="card p-4 shadow-sm mb-4">
+        <h5>2. Agregar Productos a la Venta</h5>
+        <form asp-action="AgregarProducto" method="post" class="row g-3 align-items-end">
+            <!-- Mantener estado de lista y cliente -->
+            <input type="hidden" asp-for="IdCliente" />
+            <input type="hidden" asp-for="NombreCliente" />
+            @for (int i = 0; i < Model.Detalles.Count; i++)
+            {
+                <input type="hidden" name="Detalles[@i].IdBicicleta" value="@Model.Detalles[i].IdBicicleta" />
+                <input type="hidden" name="Detalles[@i].NombreBicicleta" value="@Model.Detalles[i].NombreBicicleta" />
+                <input type="hidden" name="Detalles[@i].Precio" value="@Model.Detalles[i].Precio" />
+                <input type="hidden" name="Detalles[@i].Cantidad" value="@Model.Detalles[i].Cantidad" />
+            }
+
+            <div class="col-md-6">
+                <label class="form-label">Bicicleta</label>
+                <select asp-for="IdBicicletaSeleccionada" asp-items="Model.BicicletasList" class="form-select">
+                    <option value="0">-- Seleccionar Producto --</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Cantidad</label>
+                <input asp-for="CantidadSeleccionada" type="number" min="1" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">+ Añadir Producto</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tabla del Detalle de Factura -->
+    <form asp-action="Create" method="post" class="card p-4 shadow-sm">
+        <input type="hidden" asp-for="IdCliente" />
+        <input type="hidden" asp-for="NombreCliente" />
+
+        <h5>3. Detalle de Factura</h5>
+        <table class="table table-bordered align-middle mt-2">
+            <thead class="table-dark">
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio Unit.</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th class="text-center">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Detalles.Any())
+                {
+                    @for (int i = 0; i < Model.Detalles.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Model.Detalles[i].NombreBicicleta
+                                <input type="hidden" name="Detalles[@i].IdBicicleta" value="@Model.Detalles[i].IdBicicleta" />
+                                <input type="hidden" name="Detalles[@i].NombreBicicleta" value="@Model.Detalles[i].NombreBicicleta" />
+                            </td>
+                            <td>
+                                $@Model.Detalles[i].Precio.ToString("F2")
+                                <input type="hidden" name="Detalles[@i].Precio" value="@Model.Detalles[i].Precio" />
+                            </td>
+                            <td>
+                                @Model.Detalles[i].Cantidad
+                                <input type="hidden" name="Detalles[@i].Cantidad" value="@Model.Detalles[i].Cantidad" />
+                            </td>
+                            <td>$@Model.Detalles[i].Subtotal.ToString("F2")</td>
+                            <td class="text-center">
+                                <button type="submit" asp-action="EliminarProducto" asp-route-index="@i" class="btn btn-danger btn-sm">Quitar</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">No se han añadido productos a la lista.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Totales -->
+        <div class="row justify-content-end text-end mt-3">
+            <div class="col-md-4">
+                <p class="mb-1">Subtotal: <strong>$@Model.Subtotal.ToString("F2")</strong></p>
+                <p class="mb-1">IVA (15%): <strong>$@Model.Iva.ToString("F2")</strong></p>
+                <h4>Total Venta: <span class="text-success">$@Model.Total.ToString("F2")</span></h4>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success btn-lg">💾 Finalizar y Facturar Venta</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
